@@ -1,95 +1,158 @@
-sackpazzleword = {'бумагопрядильный', 'экспансия', 'четырёхполюсник', 'катавасия', \
-'аксельбанты', 'трихомудии', 'шкандыбать', 'пердимонокль', 'драдедамовый'}
+# Основные переменные.
+sackpazzleword = {'бумагопрядильный', 'экспансия', 'четырёхполюсник', 'катаваси\
+я', 'аксельбанты', 'трихомудии', 'шкандыбать', 'пердимонокль', 'драдедамовый'}
 pazzleword = sackpazzleword.pop()
+knownword = '*' * len(pazzleword)
+alphabet_big = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
+alphabet_small = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
 usedlett = ''
 usedlett_small = ''
 setwsmall = ''
 nosimlett = ''
-knownword = '*' * len(pazzleword)
-alphabet_big = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
-alphabet_small = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
-alltries = len(pazzleword) * 2
+outletters = alphabet_small
+gamerules = 'Правила игры: \n1 Вводите по одной букве или сразу верное слово. \
+\n2 У вас 10 попыток! Если нарушите правило 1 или введёте букву, которую уже \
+использовали до этого,\n  то попытка не защитывается.\
+\n3 Играйте в радость! Удачи!\n'
+mistake = 'Повторю, пиши букву или слово! Никаких иных символов или слогов!\
+ Попытка не защитана.'
 endtr = 0
-tries = 0                                        # Правила.
-print('Правила игры: \n1 Вводите по одной букве или сразу слово, такой же длинны, как загаданное\
-слово.\n2 У вас 10 попыток! Если ошибетесь, при написании слова или введете не букву,\n  или же введете \
-букву, которую уже использовали до этого, то попытка не защитывается.\n3 Играйте в радость! Удачи!\nЕсли\
-забудите правила, напишите в стоке команду: "!help", тамже можно узнать о других командах')
-print('Ваше слово:\n' + knownword)
+tries = 0
+gup = 0
+
+# Определение количества попыток.
+alltries = len(pazzleword) * 2 if (len(pazzleword) * 2) < 25 else 25
+
+# Выдача информации о правилах игроку.
+print(gamerules + 'Если забудите правила, напишите в строке команду: "!help", \
+там же можно узнать о других командах')
+print('Ваше слово:\n' + knownword, len(knownword), 'бкув.')
+
+# Ограничение попыток ввода.
 while endtr != alltries:
     print('Введите букву или слово. Количество оставшихся попыток:', str(alltries - tries) + '.')
+
+# Побочные переменные.
     setw = input()
+    setwsmall = ''
+    nosimlett = ''
+    sacksetw = ''    
     sacksetw = set(setw)
     for i in sacksetw:
         nosimlett += i
-    if setw[0] == '!':                               # '!help' и команды.
-        if setw[1:] == 'help':
-            print('Была использована команда "!help".\nПравила игры: \n1 Вводите по одной букве или \
-сразу слово, такой же длинны, как загаданноеслово.\n2 У вас 10 попыток! Если ошибетесь, \
-при написании слова или введете не букву,\n  или же введете букву, которую уже использовали \
-до этого, то попытка не защитывается.\nДругие комманды, их вы можете использовать в любое \
-время игры:\n"!tries" - показывает сколько попыток остальсь.\n"!letters" - показывает \
-какие буквы были использованы по ходу игры.\n"!word" - показывает известное слово.\n"!giveup" - позволяет сдаться.')
-        elif setw[1:] == 'tries':
-            print('У вас осталось попыток:', str(alltries - tries) + '.')
-        elif setw[1:] == 'letters':
-            print('Все использованные буквы, не зависимо от регистра: "' + usedlett_small + '".')
-        elif setw[1:] == 'word':
-            print('Слово, известное на данный момент: "' + knownword + '".')
-        elif setw[1:] == 'giveup':
-            endtr = alltries
-            gup = 1
+
+# Перевод всех написанных букв в прописные.
+    for i in range(len(setw)):
+        if ord(setw[i]) < 1072:
+            setwsmall += chr(ord(setw[i]) + 32)
         else:
-            print('Повторю, пиши букву или слово! Никаких иных символов или слогов! Попытка не защитана.')
-        tries -= 1
+            setwsmall += setw[i]
+
+# Центр нахождения неиспользованных букв алфавита.
+    for i in range(len(usedlett_small)):
+        numberoutlett = 0
+        for j in outletters:
+            if usedlett_small[i] == j:
+                outletters = outletters[:numberoutlett] + outletters[numberoutlett + 1:]
+            numberoutlett += 1
+
+# Проверка была ли введена пустая строка.
+    if setw == '':
+        print(mistake)
         endtr -= 1
-                           # Есть ли буква в загаданном слове + проверка повторялась ли буква + проверка буква ли это.
-    elif len(setw) == 1 and ((setw in alphabet_big) or (setw in alphabet_small)) and (setw not in usedlett):
-        if setw in alphabet_big:
-            setw = chr(ord(setw) + 32)
-        for i in range(len(pazzleword)):
-            if setw == pazzleword[i]:
-                knownword = knownword[:i] + setw + knownword[i + 1:]  # Составление слова, если буква правильная.
-        usedlett += setw + chr(ord(setw) - 32)  # Фиксация использованной буквы.
-        usedlett_small += setw          # Фиксация маленьких использованных букв.
-        if setw in pazzleword:
-            print("Буква '" + setw + "' есть в загаданном слове.")      # Показывание игроку информации.
-        else:
-            print("Буквы '" + setw + "' в загаданном слове нет.")
-        print(knownword)
-        if pazzleword == knownword:                    # Проверка составлино ли слово.
-            endtr = alltries - 1
-    elif len(setw) == 1 and ((setw in alphabet_big) or (setw in alphabet_small)):        # Ответ, если буква уже была использована.
-        print('Введенная буква уже была испльзована. Попытка не защитана.')
         tries -= 1
-        endtr -= 1
-    elif len(setw) == len(pazzleword):        # Проверка слова, введенного, как правильного.
-        for i in range(len(setw)):
-            if ord(setw[i]) < 1072:
+
+# Определение написана команда или ошибка ввода.
+    elif setw[0] == '!':
+# Перевод всех заглавных бкув в команде в прописные.
+        setwsmall = ''
+        for i in range(1, len(setw)):
+            if ord(setw[i]) < 97:
                 setwsmall += chr(ord(setw[i]) + 32)
             else:
                 setwsmall += setw[i]
+# Комманда "!help".
+        if setwsmall == 'help':
+            print('Была использована команда "!help".\n' + gamerules + 'Другие \
+комманды:\n"!tries" - показывает сколько попыток остальсь.\n"!outletters" - \
+показывает какие буквы еще не были использованы.\n"!word" - показывает \
+известное слово.\n"!giveup" - позволяет сдаться.')
+# Комманда "!tries".
+        elif setwsmall == 'tries':
+            print('У вас осталось попыток:', str(alltries - tries) + '.')
+# Комманда "!outletters".
+        elif setwsmall == 'outletters':
+            print('Оставшиеся буквы, не зависимо от регистра: "' + outletters + '".')
+# Комманда "!word".
+        elif setwsmall == 'word':
+            print('Слово, известное на данный момент: "' + knownword + '"', str(len(knownword)), 'букв.')
+# Комманда "!giveup".
+        elif setwsmall == 'giveup':
+            endtr = alltries
+            gup = 1
+# Вывод информации, если была введена не команда.
+        else:
+            print('Повторю, пиши букву или слово! Никаких иных символов или\
+слогов! Попытка не защитана.')
+# Восствновление количества попыток.
+        tries -= 1
+        endtr -= 1
+        setwsmall = ''
+        
+# Проверка написана ли буква рус. алфавита и повторялась ли она.
+    elif len(setw) == 1 and (setw in (alphabet_big + alphabet_small)) and (setw not in usedlett):
+# Составление слова, если буква правильная.
+        for i in range(len(pazzleword)):
+            if setwsmall == pazzleword[i]:
+                knownword = knownword[:i] + setwsmall + knownword[i + 1:]
+# Фиксация использованной буквы.
+        usedlett += setwsmall + chr(ord(setwsmall) - 32)
+# Фиксация использованных букв с переводом в прописные.
+        usedlett_small += setwsmall
+# Показывание игроку информации.
+        if setwsmall in pazzleword:
+            print("Буква '" + setwsmall + "' есть в загаданном слове.")
+        else:
+            print("Буквы '" + setwsmall + "' в загаданном слове нет.")
+        print(knownword, len(knownword), 'букв.')
+# Проверка составлино ли слово.
+        if pazzleword == knownword:
+            endtr = alltries - 1
+
+# Ответ, если буква уже была использована.
+    elif len(setw) == 1 and (setw in (alphabet_big + alphabet_small)):
+        print('Введенная буква уже была испльзована. Попытка не защитана.')
+# Восстановление количества попыток.
+        tries -= 1
+        endtr -= 1
+
+# Проверка введенного слова.
+    elif len(setw) == len(pazzleword):
+# Проверка правильное ли слово.
         if setwsmall == pazzleword:
             knownword = pazzleword
             endtr = alltries - 1
         else:
             print('Введено неправильное слово.')
-            setwsmall = ''
-                                       # Проверка нарушения правил.
+
+# Проверка нарушения правил.
     else:
-        print('Повторю, пиши букву или слово! Никаких иных символов или слогов! Попытка не защитана.')
+        print(mistake)
+# Восстановление количества попыток.
+        endtr -= 1
         tries -= 1
-    
-    nosimlett = ''
-    sacksetw = ''
+
+# Защитывание попытки.
     tries += 1
     endtr += 1
-                                       # Вывод результата.
+
+# Вывод результата игры.
 if (pazzleword == knownword) and tries == 1:
-    print('Как не стыдно! Ты нарушил главное правило! Правило №3!')
+    print('Как не стыдно!? Ты нарушил главное правило! Играть в радость!')
 elif pazzleword == knownword:
     print('Позравляю! Слово найдено! Затрачено попыток: ' + str(tries) + '.')
 elif gup == 1:
-    print('Вы сдались, печально. Загаданное слово было: ' + pazzleword + '.')
+    print('Вы сдались. Печально. Загаданное слово было: ' + pazzleword + '.')
 else:
     print('Попытки кончились. Не расстраивайся, повезет в следующий раз!')
+x = input()
