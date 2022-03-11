@@ -2,7 +2,7 @@
 
 ## Game description.
 
-The game 'wheel of fortune' is known over the world with diferent names, but essence of it is to guess the made word. There are nine words which can be guessed in this version of game and on my view, it is pretty specific. This version is written in Russian and rules are similar with TV game, but ideas are different. There remains the rule of guessing by one letter or the whole word at once, however one person plays with a limited counts of attemptions, which are calculated depended on the length of chosen word.
+The game *'wheel of fortune'* is known over the world with diferent names, but essence of it is to guess the made word. There are nine words which can be guessed in this version of game and on my view, it is pretty specific. This version is written in Russian and rules are similar with TV game, but ideas are different. There remains the rule of guessing by one letter or the whole word at once, however one person plays with a limited counts of attemptions, which are calculated depended on the length of chosen word.
 
 ## Gameplay description.
 
