@@ -10,8 +10,8 @@ The game rules and command '!help' description are displayed. The guessed word w
 
 ## Commands.
 
-!help - shows gamerules and other commands.
-!tries - shows how many attempts are left.
-!outletters - shows which letters have not been used yet.
-!word - shows the word with open letters.
-!giveup - allows you to give up.
+* **!help - shows gamerules and other commands.**
+* **!tries - shows how many attempts are left.**
+* **!outletters - shows which letters have not been used yet.**
+* **!word - shows the word with open letters.**
+* **!giveup - allows you to give up.**
